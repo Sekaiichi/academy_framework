@@ -3,3 +3,5 @@ htdocs
 vendor
 examples
 .DS_Store
+phpunit.xml
+.phpunit.result.cache
