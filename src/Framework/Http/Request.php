@@ -7,7 +7,7 @@ class Request
 {
     public function getQueryParams(): array
     {
-        return $_GET['sss'];
+        return $_GET;
     }
 
     public function getParsedBody(): ?array
