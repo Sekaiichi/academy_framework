@@ -18,20 +18,22 @@ class Request
         return $this->queryParams;
     }
 
-    public function getParsedBody(): array
+    public function getParsedBody(): ?array
     {
         return $this->parsedBody;
     }
 
     public function withQueryParams(array $query): self
     {
+        $new = clone $this;
         $this->queryParams = $query;
-        return $this;
+        return $new;
     }
 
     public function withParsedBody($data): self
     {
+        $new = clone $this;
         $this->parsedBody = $data;
-        return $this;
+        return $new;
     }
 }
