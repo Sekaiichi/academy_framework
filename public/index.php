@@ -1,6 +1,6 @@
 <?php
 
-use Framework\Http\ResponseSender;
+use Framework\Http\Action\SiteAction;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\Diactoros\ServerRequestFactory;
@@ -20,14 +20,13 @@ $action = null;
 if ($path === '/') {
 
     $action = function (ServerRequestInterface $request) {
-        $name = $request->getQueryParams()['name'] ?? 'Guest';
-        return new HtmlResponse('Hello, ' . $name . '!');
+        return (new SiteAction())->actionIndex($request);
     };
 
 } elseif ($path === '/about') {
 
-    $action = function () {
-        return new HtmlResponse('I am a simple site');
+    $action = function (ServerRequestInterface $request) {
+        return (new SiteAction())->actionAbout($request);
     };
 
 } elseif ($path === '/blog') {
@@ -57,7 +56,6 @@ if ($action) {
 } else {
     $response = new HtmlResponse('Undefined page', 404);
 }
-
 
 ### Sending
 $a= new \Framework\Http\ResponseSender();
