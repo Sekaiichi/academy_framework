@@ -16,7 +16,7 @@ class ResponseTest extends TestCase
         self::assertEquals('OK', $response->getReasonPhrase());
     }
 
-/*    public function test404(): void
+    public function test404(): void
     {
         $response = new Response($body = 'Empty', $status = 404);
 
@@ -32,7 +32,7 @@ class ResponseTest extends TestCase
             ->withHeader($name2 = 'X-Header-2', $value2 = 'value_2');
 
         self::assertEquals([$name1 => $value1, $name2 => $value2], $response->getHeaders());
-    }*/
+    }
 }
 
 
