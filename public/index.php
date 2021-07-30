@@ -1,25 +1,65 @@
 <?php
 
-use Framework\Http\RequestFactory;
-use Framework\Http\Response;
+use Framework\Http\ResponseSender;
+use Laminas\Diactoros\Response\HtmlResponse;
+use Laminas\Diactoros\Response\JsonResponse;
+use Laminas\Diactoros\ServerRequestFactory;
+use Psr\Http\Message\ServerRequestInterface;
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
 ### Initialization
-
-$request = RequestFactory::fromGlobals();
+$request = ServerRequestFactory::fromGlobals();
 
 ### Action
 
-$name = $request->getQueryParams()['name'] ?? 'Guest';
+$path = $request->getUri()->getPath();
 
-$response = (new Response('Hello, ' . $name . '!'))
-    ->withHeader('X-Developer', 'seka');
+$action = null;
+
+if ($path === '/') {
+
+    $action = function (ServerRequestInterface $request) {
+        $name = $request->getQueryParams()['name'] ?? 'Guest';
+        return new HtmlResponse('Hello, ' . $name . '!');
+    };
+
+} elseif ($path === '/about') {
+
+    $action = function () {
+        return new HtmlResponse('I am a simple site');
+    };
+
+} elseif ($path === '/blog') {
+
+    $action = function () {
+        return new JsonResponse([
+            ['id' => 2, 'title' => 'The Second Post'],
+            ['id' => 1, 'title' => 'The First Post'],
+        ]);
+    };
+
+} elseif (preg_match('#^/blog/(?P<id>\d+)$#i', $path, $matches)) {
+
+    $request = $request->withAttribute('id', $matches['id']);
+
+    $action = function (ServerRequestInterface $request) {
+        $id = $request->getAttribute('id');
+        if ($id > 2) {
+            return new JsonResponse(['error' => 'Undefined page'], 404);
+        }
+        return new JsonResponse(['id' => $id, 'title' => 'Post #' . $id]);
+    };
+}
+
+if ($action) {
+    $response = $action($request);
+} else {
+    $response = new HtmlResponse('Undefined page', 404);
+}
+
 
 ### Sending
+$a= new \Framework\Http\ResponseSender();
+$a->send($response);
 
-header('HTTP/1.0 ' . $response->getStatusCode() . ' ' . $response->getReasonPhrase());
-foreach ($response->getHeaders() as $name => $value) {
-    header($name . ':' . $value);
-}
-echo $response->getBody();
