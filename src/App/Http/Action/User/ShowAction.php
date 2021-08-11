@@ -18,6 +18,6 @@ class ShowAction extends Action
 
         $user = User::find($id);
 
-        return $this->JsonResponse(['users' => $users]);
+        return $this->JsonResponse(['user' => $user]);
     }
 }
