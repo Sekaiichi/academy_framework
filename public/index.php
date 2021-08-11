@@ -23,6 +23,9 @@ $routes = new RouteCollection();
     $routes->get('blog_show', '/blog/{id}', new Action\Blog\ShowAction(), ['id' => '\d+']);
 
     $routes->get('users_get', '/users', new Action\User\IndexAction());
+    $routes->get('user_get', '/users/{id}', new Action\User\ShowAction(), ['id' => '\d+']);
+    $routes->post('user_store', '/users', new Action\User\StoreAction());
+    $routes->post('user_store', '/users/{id}/update', new Action\User\UpdateAction(), ['id' => '\d+']);
 $router = new Router($routes);
 
 ### Running
