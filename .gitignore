@@ -1,5 +1,5 @@
 .idea
-htdocs
+htdocs/index.php
 vendor
 examples
 .DS_Store
