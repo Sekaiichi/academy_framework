@@ -4,11 +4,12 @@
 namespace App\Http\Action\User;
 
 
+use App\Http\Action\Action;
 use App\Models\User;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
 
-class StoreAction
+class StoreAction extends Action
 {
     public function __invoke(ServerRequestInterface $request): JsonResponse
     {
@@ -21,6 +22,6 @@ class StoreAction
             $users->password = $parsedBody['password'];
         $users->save();
 
-        return new JsonResponse(['user' => $users]);
+        return $this->JsonResponse(['users' => $users]);
     }
 }

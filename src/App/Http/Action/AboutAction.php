@@ -4,7 +4,7 @@ namespace App\Http\Action;
 
 use Laminas\Diactoros\Response\HtmlResponse;
 
-class AboutAction
+class AboutAction extends Action
 {
     public function __invoke(): HtmlResponse
     {

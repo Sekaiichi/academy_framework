@@ -5,11 +5,12 @@ namespace App\Http\Action\User;
 
 
 
+use App\Http\Action\Action;
 use App\Models\User;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
 
-class ShowAction
+class ShowAction extends Action
 {
     public function __invoke(ServerRequestInterface $request)
     {
@@ -17,6 +18,6 @@ class ShowAction
 
         $user = User::find($id);
 
-        return new JsonResponse(['user' => $user]);
+        return $this->JsonResponse(['users' => $users]);
     }
 }
